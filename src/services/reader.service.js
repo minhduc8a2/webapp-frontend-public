@@ -16,7 +16,10 @@ class ReaderService {
     this.setAuthorizationForHeaders()
     return (await this.api.post("/login", data)).data
   }
-
+  async create(data) {
+    this.setAuthorizationForHeaders()
+    return (await this.api.post("/", data)).data
+  }
   async get(id) {
     this.setAuthorizationForHeaders()
     return (await this.api.get(`/fullInfo/${id}`)).data

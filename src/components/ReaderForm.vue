@@ -25,8 +25,11 @@ const fieldList = [
 ]
 
 ////
-function createYupObject() {
+function createYupObject(mode) {
   let result = {}
+  if (mode == "create") {
+    fieldList.splice(6, 1)
+  }
   fieldList.forEach((field) => {
     if (field.type == "text") {
       result[field.field] = yup
@@ -94,9 +97,22 @@ export default {
     mainField: { type: String },
   },
   data() {
+    if (this.mode == "create") {
+      fieldList.splice(6, 1)
+
+      fieldList.unshift({
+        fullName: "Tên đăng nhập",
+        field: "MaDocGia",
+        type: "text",
+        min: 3,
+      })
+    }
     const objectFormSchema = yup.object().shape(createYupObject())
     return {
-      objectLocal: Object.create(this.currentObject),
+      objectLocal:
+        this.mode == "edit"
+          ? Object.create(this.currentObject)
+          : createEmptyObject(),
       objectFormSchema,
       fieldList: fieldList,
     }
@@ -111,10 +127,10 @@ export default {
     this.objectLocal.CurrentPassword = ""
     this.objectLocal.NewPassword = ""
     this.objectLocal.ConfirmPassword = ""
-    if (this.mode == "create") this.objectLocal = createEmptyObject()
   },
   updated() {
-    this.objectLocal = Object.create(this.currentObject)
+    if (this.mode == "edit")
+      this.objectLocal = Object.create(this.currentObject)
   },
 }
 </script>
@@ -142,7 +158,9 @@ export default {
     </div>
 
     <div class="form-group mt-4 d-flex gap-4">
-      <button class="btn btn-danger">Cập nhật</button>
+      <button class="btn btn-danger">
+        <span v-if="mode == 'edit'">Cập nhật</span> <span v-else>Thêm</span>
+      </button>
     </div>
   </Form>
 </template>

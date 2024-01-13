@@ -150,6 +150,7 @@ export default {
           :rawObjectName="rawName"
           v-model:activeIndex="activeIndex"
         />
+        <h3 v-if="filteredListCount == 0">Chưa có sách nào được mượn!</h3>
       </div>
       <div class="col-6">
         <MoreInfo

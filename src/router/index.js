@@ -4,12 +4,18 @@ import Reader from "@/views/Reader.vue"
 
 import BorrowTracker from "@/views/BorrowTracker.vue"
 import Login from "@/views/Login.vue"
+import Signup from "@/views/Signup.vue"
 import store from "@/helper/store"
 const routes = [
   {
     path: "/login",
     name: "login",
     component: Login,
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: Signup,
   },
   {
     path: "/",
@@ -57,7 +63,12 @@ router.beforeEach(async (to, from, next) => {
   const logined = store.getters.logined
   // next-line: check if route ("to" object) needs authenticated
 
-  if (to.name != "books" && to.name != "login" && !logined)
+  if (
+    to.name != "books" &&
+    to.name != "login" &&
+    to.name != "signup" &&
+    !logined
+  )
     next({ name: "login" })
   else next()
 })
