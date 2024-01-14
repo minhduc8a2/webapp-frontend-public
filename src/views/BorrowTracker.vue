@@ -2,14 +2,14 @@
 //configure here
 import borrowTrackerService from "@/services/borrowTracker.service"
 import bookService from "@/services/book.service"
-import BorrowTrackerForm from "@/components/BorrowTrackerForm.vue"
+
 import other from "@/helper/other"
 const fieldList = ["MaDocGia", "MaSach", "NgayMuon", "NgayTra", "TrangThai"]
 const rawName = "borrowTracker"
 const objectName = "Theo dõi mượn sách"
 const mainField = "MaDocGia"
 const service = borrowTrackerService
-const ThisForm = BorrowTrackerForm
+
 ////////////////////////////////////////////////////////////////////////
 import ObjectList from "@/components/ObjectList.vue"
 import InputSearch from "@/components/InputSearch.vue"
@@ -18,7 +18,7 @@ import MoreInfo from "@/components/MoreInfo.vue"
 export default {
   components: {
     ObjectList,
-    ThisForm,
+
     InputSearch,
     MoreInfo,
   },
@@ -184,7 +184,7 @@ export default {
           :rawObjectName="rawName"
           v-model:activeIndex="activeIndex"
         />
-        <h3 v-if="filteredListCount == 0">Chưa có sách nào được mượn!</h3>
+        <h3 v-if="filteredListCount == 0">Danh sách rỗng!</h3>
       </div>
       <div class="col-6">
         <MoreInfo

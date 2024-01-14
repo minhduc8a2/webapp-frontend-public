@@ -52,6 +52,16 @@ export default {
         let trackerResult = await borrowTrackerService.search(
           `MaSach=${this.book.MaSach}&&TrangThai=Pending`
         )
+        if (trackerResult.data.length == 0) {
+          trackerResult = await borrowTrackerService.search(
+            `MaSach=${this.book.MaSach}&&TrangThai=Accepted`
+          )
+        }
+        if (trackerResult.data.length == 0) {
+          trackerResult = await borrowTrackerService.search(
+            `MaSach=${this.book.MaSach}&&TrangThai=Borrowed`
+          )
+        }
         if (nxbResult.status == true && docGiaResult.status == true) {
           this.book.TenNXB = nxbResult.data.TenNXB
           this.reader = docGiaResult.data
@@ -59,6 +69,7 @@ export default {
         }
         if (trackerResult.status == true && trackerResult.data.length > 0) {
           this.borrowTracker = trackerResult.data[0]
+          console.log(trackerResult)
           this.borrowTracker.NgayMuon = other.formatDate(
             this.borrowTracker.NgayMuon
           )

@@ -65,6 +65,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (
     to.name != "books" &&
+    to.name != "home" &&
     to.name != "login" &&
     to.name != "signup" &&
     !logined

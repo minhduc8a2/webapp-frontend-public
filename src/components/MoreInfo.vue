@@ -19,7 +19,6 @@ export default {
       this.$emit("cancelBorrowTracker", this.borrowTracker._id)
     },
   },
- 
 }
 </script>
 
@@ -71,7 +70,10 @@ export default {
           class="btn btn-danger me-2"
           style="width: fit-content"
           @click="cancelBorrowTracker"
-          v-if="borrowTracker.TrangThai != 'Cancelled'"
+          v-if="
+            borrowTracker.TrangThai == 'Pending' ||
+            borrowTracker.TrangThai == 'Accepted'
+          "
         >
           Hủy mượn sách
         </button>

@@ -28,14 +28,21 @@ export default {
   },
   methods: {
     login() {
-      this.$store.dispatch("login", {
-        username: this.username,
-        password: this.password,
-      })
+      this.$store
+        .dispatch("login", {
+          username: this.username,
+          password: this.password,
+        })
+        .then((result) => {
+          if (result.status != true) alert(result.message)
+          if (result.status == true) this.$router.push("/")
+        })
     },
   },
   created() {
-    this.$store.dispatch("login", null)
+    this.$store.dispatch("login", null).then((result) => {
+      if (result.status == true) this.$router.push("/")
+    })
   },
 }
 </script>
