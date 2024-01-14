@@ -1,5 +1,6 @@
 <script>
 import * as yup from "yup"
+import other from "@/helper/other"
 /// configure here
 const fieldList = [
   { fullName: "Họ lót", field: "HoLot", type: "text", min: 1 },
@@ -58,7 +59,7 @@ function createYupObject(mode) {
     } else if (field.field == "ConfirmPassword") {
       result[field.field] = yup
         .string()
-        .test("passwords-match", "Passwords must match", function (value) {
+        .test("passwords-match", "Mật khẩu không trùng khớp", function (value) {
           return this.parent[field.relate] === value
         })
     }
@@ -71,12 +72,7 @@ function createEmptyObject() {
     if (field.type == "text") result[field.field] = ""
     else if (field.type == "number") result[field.field] = 0
     else if (field.type == "myDate") {
-      let currentDate = new Date()
-      let day = currentDate.getDate().toString().padStart(2, "0")
-      let month = (currentDate.getMonth() + 1).toString().padStart(2, "0")
-      let year = currentDate.getFullYear()
-
-      result[field.field] = day + "/" + month + "/" + year
+      result[field.field] = new Date().toString()
     }
   })
   return result
@@ -91,6 +87,7 @@ export default {
   },
   emits: ["submit:object"],
   props: {
+    other,
     currentObject: { type: Object },
     mode: { type: String, required: true },
     objectName: { type: String },
@@ -98,14 +95,16 @@ export default {
   },
   data() {
     if (this.mode == "create") {
-      fieldList.splice(6, 1)
+      if (fieldList.find((field) => fieldList.field != "MaDocGia")) {
+        fieldList.splice(6, 1)
 
-      fieldList.unshift({
-        fullName: "Tên đăng nhập",
-        field: "MaDocGia",
-        type: "text",
-        min: 3,
-      })
+        fieldList.unshift({
+          fullName: "Tên đăng nhập",
+          field: "MaDocGia",
+          type: "text",
+          min: 3,
+        })
+      }
     }
     const objectFormSchema = yup.object().shape(createYupObject())
     return {
@@ -118,19 +117,28 @@ export default {
     }
   },
   methods: {
+    formatNgaySinh() {
+      this.objectLocal.NgaySinh = other.formatDate(this.objectLocal.NgaySinh)
+    },
     submitObject() {
+      this.objectLocal.NgaySinh = other.createDate(this.objectLocal.NgaySinh)
       if (this.mode == "edit") this.$emit("submit:object", this.objectLocal)
       else this.$emit("submit:object", this.objectLocal)
+      this.formatNgaySinh()
     },
   },
   created() {
     this.objectLocal.CurrentPassword = ""
     this.objectLocal.NewPassword = ""
     this.objectLocal.ConfirmPassword = ""
+
+    this.formatNgaySinh()
   },
+
   updated() {
     if (this.mode == "edit")
       this.objectLocal = Object.create(this.currentObject)
+    this.formatNgaySinh()
   },
 }
 </script>

@@ -2,6 +2,7 @@
 //configure here
 import readerService from "@/services/reader.service"
 import ReaderForm from "@/components/ReaderForm.vue"
+import other from "@/helper/other"
 
 const service = readerService
 const ThisForm = ReaderForm
@@ -53,6 +54,7 @@ export default {
         const res = await service.get(this.$store.state.logined.MaDocGia)
         if (res.status == true) {
           this.reader = res.data
+          this.reader.NgaySinh = other.formatDate(this.reader.NgaySinh)
         }
       } catch (error) {
         alert(error.response?.data.message)

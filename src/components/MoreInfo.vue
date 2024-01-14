@@ -1,23 +1,25 @@
 <script>
-import otherDataMap from "@/helper/otherDataMap"
+import other from "@/helper/other"
 export default {
   props: {
     borrowTracker: { type: Object, required: true },
   },
   data() {
     return {
+      other: other,
       reader: this.$store.state.logined,
     }
   },
   emits: ["cancelBorrowTracker"],
   methods: {
     getStatus(status) {
-      return otherDataMap.bookStatus[status]
+      return other.bookStatus[status]
     },
     cancelBorrowTracker() {
       this.$emit("cancelBorrowTracker", this.borrowTracker._id)
     },
   },
+ 
 }
 </script>
 
@@ -44,11 +46,18 @@ export default {
     </div>
     <div class="p-4 rounded-2 shadow my-3">
       <p>
-        Ngày mượn: <span class="fw-bold"> {{ borrowTracker.NgayMuon }}</span>
+        Ngày mượn:
+        <span class="fw-bold">
+          {{ other.formatDate(borrowTracker.NgayMuon) }}</span
+        >
       </p>
       <p>
         Ngày trả:
-        <span class="fw-bold"> {{ borrowTracker.NgayTra }}</span>
+        <span class="fw-bold">
+          {{
+            borrowTracker.NgayTra ? other.formatDate(borrowTracker.NgayTra) : ""
+          }}</span
+        >
       </p>
       <p>
         Trạng thái:

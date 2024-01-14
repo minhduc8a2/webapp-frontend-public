@@ -2,19 +2,11 @@
 import publisherService from "@/services/publisher.service"
 import readerService from "@/services/reader.service"
 import borrowTrackerService from "@/services/borrowTracker.service"
-import otherDataMap from "@/helper/otherDataMap"
+import other from "@/helper/other"
 /// configure here
 
 ////
-function createDate(date, days = 0) {
-  let currentDate = date
-  currentDate.setDate(date.getDate() + days)
-  let day = currentDate.getDate().toString().padStart(2, "0")
-  let month = (currentDate.getMonth() + 1).toString().padStart(2, "0")
-  let year = currentDate.getFullYear()
 
-  return day + "/" + month + "/" + year
-}
 export default {
   props: {
     book: { type: Object },
@@ -22,9 +14,10 @@ export default {
   data() {
     return {
       reader: null,
+      other: other,
       borrowTracker: null,
       borrowInfo: {
-        NgayMuon: createDate(new Date()),
+        NgayMuon: other.formatDate(new Date().toString()),
       },
       borrowInfoFieldList: [{ fullName: "Ngày mượn", field: "NgayMuon" }],
       readerFieldList: [
@@ -45,7 +38,7 @@ export default {
   emits: ["update:order"],
   methods: {
     getStatusName(status) {
-      return otherDataMap.bookStatus[status]
+      return other.bookStatus[status]
     },
     updateOrder() {
       this.$emit("update:order", false)
@@ -66,6 +59,13 @@ export default {
         }
         if (trackerResult.status == true && trackerResult.data.length > 0) {
           this.borrowTracker = trackerResult.data[0]
+          this.borrowTracker.NgayMuon = other.formatDate(
+            this.borrowTracker.NgayMuon
+          )
+          if (this.borrowTracker.NgayTra)
+            this.borrowTracker.NgayTra = other.formatDate(
+              this.borrowTracker.NgayTra
+            )
           this.borrowInfo.NgayMuon = this.borrowTracker.NgayMuon
           this.borrowInfo.NgayTra = this.borrowTracker.NgayTra
         }
@@ -76,7 +76,7 @@ export default {
         let result = await borrowTrackerService.create({
           MaDocGia: this.reader.MaDocGia,
           MaSach: this.book.MaSach,
-          NgayMuon: this.borrowInfo.NgayMuon,
+          NgayMuon: new Date().toString(),
           NgayTra: this.borrowInfo.NgayTra,
           TrangThai: "Pending",
         })

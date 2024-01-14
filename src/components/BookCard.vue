@@ -1,6 +1,6 @@
 <script>
 import publisherService from "@/services/publisher.service"
-
+import other from "@/helper/other"
 /// configure here
 
 ////
@@ -14,6 +14,7 @@ export default {
 
   data() {
     return {
+      other,
       fieldList: [
         { fullName: "Mã Sách", field: "MaSach" },
         { fullName: "Tên Sách", field: "TenSach" },
@@ -24,11 +25,7 @@ export default {
       ],
     }
   },
-  watch: {
-    book() {
-      this.getInfo()
-    },
-  },
+
   methods: {
     updateOrder() {
       this.$emit("update:order", true)
@@ -45,8 +42,10 @@ export default {
       } catch (error) {}
     },
   },
+
   mounted() {
     this.getInfo()
+    this.book.NamXuatBan = other.formatDate(this.book.NamXuatBan)
   },
 }
 </script>

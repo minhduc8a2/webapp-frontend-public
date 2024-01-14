@@ -90,6 +90,9 @@ export default {
   mounted() {
     this.refreshList()
   },
+  created() {
+    this.$store.dispatch("login", null)
+  },
 }
 </script>
 <template>
@@ -117,6 +120,7 @@ export default {
       </div>
       <div class="col-6">
         <ThisCard
+          :key="activeIndex"
           :book="filteredList[activeIndex]"
           v-if="filteredListCount > 0 && !order && activeIndex >= 0"
           v-model:order="order"

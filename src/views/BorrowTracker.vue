@@ -3,7 +3,7 @@
 import borrowTrackerService from "@/services/borrowTracker.service"
 import bookService from "@/services/book.service"
 import BorrowTrackerForm from "@/components/BorrowTrackerForm.vue"
-
+import other from "@/helper/other"
 const fieldList = ["MaDocGia", "MaSach", "NgayMuon", "NgayTra", "TrangThai"]
 const rawName = "borrowTracker"
 const objectName = "Theo dõi mượn sách"
@@ -25,13 +25,14 @@ export default {
   data() {
     return {
       objectList: [],
-
+      other: other,
       rawName,
       objectName,
       mainField,
       searchText: "",
       activeIndex: 1,
       create: false,
+      filterType: "",
     }
   },
 
@@ -61,6 +62,9 @@ export default {
   watch: {
     searchText() {
       this.activeIndex = -1
+    },
+    filterType() {
+      this.searchText = this.filterType
     },
   },
   methods: {
@@ -132,14 +136,44 @@ export default {
   <div class="container my-5">
     <div class="row">
       <div class="col-6">
-        <div
-          class="d-flex justify-content-between align-items-center text-nowrap gap-4"
-        >
+        <div class="">
           <InputSearch v-model="searchText" />
-          <div
-            class="bg-secondary opacity-50"
-            style="width: 1px; height: 2rem"
-          ></div>
+          <div class="row g-2 my-4">
+            <div class="col-4">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="flexRadioDefault"
+                  id="flexRadioDefault1"
+                  value=""
+                  v-model="filterType"
+                  checked
+                />
+                <label class="form-check-label" for="flexRadioDefault1">
+                  Tất cả
+                </label>
+              </div>
+            </div>
+            <div
+              class="col-4"
+              v-for="(item, index) in Object.keys(other.bookStatus)"
+            >
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="flexRadioDefault"
+                  :id="index"
+                  :value="item"
+                  v-model="filterType"
+                />
+                <label class="form-check-label" :for="index">
+                  {{ other.bookStatus[item] }}
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
 
         <hr class="my-4" />
