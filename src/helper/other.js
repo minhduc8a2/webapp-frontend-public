@@ -7,6 +7,7 @@ const bookStatus = {
   Returned: "Đã trả",
 }
 function formatDate(dateString, days = 0) {
+  if (dateString.match(/^\d{2}\/\d{2}\/\d{4}$/)) return dateString
   let currentDate = new Date(dateString)
   currentDate.setDate(currentDate.getDate() + days)
   let day = currentDate.getDate().toString().padStart(2, "0")
