@@ -8,7 +8,7 @@ class StaffService {
     this.api = createApiClient(baseUrl)
   }
   setAuthorizationForHeaders() {
-    const token = localStorage.getItem("library_token")
+    const token = localStorage.getItem("library_token_public")
     if (token) {
       this.api.defaults.headers.common["Authorization"] = "Bearer " + token
     } else this.api.defaults.headers.common["Authorization"] = ""
