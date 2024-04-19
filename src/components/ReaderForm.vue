@@ -2,7 +2,7 @@
 import * as yup from "yup"
 import other from "@/helper/other"
 /// configure here
-const fieldList = [
+const baseFieldList = [
   { fullName: "Họ lót", field: "HoLot", type: "text", min: 1 },
   { fullName: "Tên", field: "Ten", type: "text", min: 1 },
   { fullName: "Ngày sinh", field: "NgaySinh", type: "myDate", min: 1 },
@@ -25,6 +25,7 @@ const fieldList = [
   },
 ]
 
+let fieldList = [...baseFieldList]
 ////
 function createYupObject(mode) {
   let result = {}
@@ -95,9 +96,8 @@ export default {
   },
   data() {
     if (this.mode == "create") {
-      if (fieldList.find((field) => fieldList.field != "MaDocGia")) {
+      if (!fieldList.find((field) => field.field == "MaDocGia")) {
         fieldList.splice(6, 1)
-
         fieldList.unshift({
           fullName: "Tên đăng nhập",
           field: "MaDocGia",
@@ -113,7 +113,7 @@ export default {
           ? Object.create(this.currentObject)
           : createEmptyObject(),
       objectFormSchema,
-      fieldList: fieldList,
+      fieldList: this.mode == "edit" ? baseFieldList : fieldList,
     }
   },
   methods: {

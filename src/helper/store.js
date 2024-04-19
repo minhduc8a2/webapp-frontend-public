@@ -29,7 +29,7 @@ const store = createStore({
           var result = await readerService.login({})
         }
         if (result.status == true) {
-          localStorage.setItem("library_token_public", result.data.token)
+          localStorage.setItem("library_token", result.data.token)
           commit("setLogined", result.data.reader)
         }
         return result
@@ -40,8 +40,8 @@ const store = createStore({
     async logout({ commit }) {
       console.log("logout")
       commit("setLogined", null)
-      localStorage.removeItem("library_token_public")
-      console.log(localStorage.getItem("library_token_public"))
+      localStorage.removeItem("library_token")
+      console.log(localStorage.getItem("library_token"))
 
       router.push({ name: "login" })
     },
