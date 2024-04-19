@@ -15,6 +15,7 @@ export default {
   data() {
     return {
       reader: null,
+      
       edit: false,
       fieldList: [
         { fullName: "Tên đăng nhập", field: "MaDocGia", type: "text", min: 1 },
@@ -85,6 +86,7 @@ export default {
       </div>
       <div class="col-6">
         <ThisForm
+          
           mode="edit"
           v-if="edit"
           :currentObject="reader"

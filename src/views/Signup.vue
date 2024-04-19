@@ -1,5 +1,5 @@
 <script>
-import ReaderForm from "@/components/ReaderForm.vue"
+import ReaderForm from "@/components/ReaderFormForSignup.vue"
 import readerService from "@/services/reader.service"
 export default {
   components: {
